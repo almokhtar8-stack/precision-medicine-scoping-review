@@ -2,3 +2,6 @@
 __pycache__/
 *.pyc
 pmid_checkpoint.json
+# uncompressed CSVs — commit only .csv.gz
+pubmed_results_*.csv
+!pubmed_results_*.csv.gz

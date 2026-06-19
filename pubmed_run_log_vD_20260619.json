@@ -1,0 +1,13 @@
+{
+  "run_date_utc": "2026-06-19T18:26:25.805161+00:00",
+  "query_version": "Version D",
+  "database": "PubMed/MEDLINE",
+  "filters": "English, 2015-present",
+  "raw_hit_count": 7895,
+  "pmids_collected": 7895,
+  "retrieved_count": 7847,
+  "deduplicated_count": 7847,
+  "output_file": "pubmed_results_20260619.csv",
+  "query_string": "(\"precision medicine\"[tiab] OR \"personalized medicine\"[tiab] OR \"personalised medicine\"[tiab] OR pharmacogenom*[tiab] OR pharmacogenetic*[tiab]) AND (implement*[tiab] OR \"organizational readiness\"[tiab] OR \"organisational readiness\"[tiab] OR \"change management\"[tiab] OR \"clinical workflow\"[tiab] OR \"scale up\"[tiab] OR rollout[tiab]) AND (\"2015/01/01\"[Date - Publication] : \"3000\"[Date - Publication]) AND (english[Language])",
+  "retrieval_method": "date-window esearch + POST efetch (bypasses 9999/10000 caps)"
+}

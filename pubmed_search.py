@@ -2,8 +2,14 @@
 PubMed/MEDLINE search for scoping review:
 "Precision Medicine Implementation in Healthcare Systems"
 
-Version B search structure: (Group 1) AND (Group 2 OR Group 3)
+Version D search structure: G1 AND G2 (strict — no G3, no rescue clause)
 Filters: English, 2015-present
+Count: 7,895 (count-only confirmed before retrieval, 2026-06-19)
+
+Revision history:
+  Version B (117,943) — too broad; G2 OR G3 with single-word broadeners
+  Version C (82,361)  — G2 tightened; EQUITY_RESCUE clause non-viable (Popejoy no abstract)
+  Version D (7,895)   — G1 narrowed; G2 phrases-only; strict AND logic
 
 Retrieval strategy — PubMed esearch caps at 9,999 records per call.
 Work-around: date-range chunking.
@@ -22,40 +28,26 @@ import os
 from datetime import datetime, timezone
 
 # ---------------------------------------------------------------------------
-# Search terms (locked Version B — no date filter here; added per-chunk below)
+# Search terms — Version D (locked 2026-06-19, author-approved)
 # ---------------------------------------------------------------------------
 
 G1 = (
     '("precision medicine"[tiab] OR "personalized medicine"[tiab] OR '
-    '"personalised medicine"[tiab] OR "genomic medicine"[tiab] OR '
-    'genomic*[tiab] OR pharmacogenom*[tiab] OR pharmacogenetic*[tiab] OR '
-    '"precision health"[tiab] OR "precision oncology"[tiab] OR '
-    '"Precision Medicine"[Mesh] OR "Pharmacogenetics"[Mesh] OR "Genomics"[Mesh])'
+    '"personalised medicine"[tiab] OR pharmacogenom*[tiab] OR pharmacogenetic*[tiab])'
 )
 
 G2 = (
-    '(implement*[tiab] OR adopt*[tiab] OR integrat*[tiab] OR '
-    '"organizational readiness"[tiab] OR "organisational readiness"[tiab] OR '
-    'readiness[tiab] OR "change management"[tiab] OR "healthcare delivery"[tiab] OR '
-    '"health care delivery"[tiab] OR "service delivery"[tiab] OR '
-    '"clinical workflow"[tiab] OR uptake[tiab] OR rollout[tiab] OR '
-    '"scale up"[tiab] OR barrier*[tiab] OR facilitat*[tiab] OR enabler*[tiab])'
-)
-
-G3 = (
-    '(governance[tiab] OR policy[tiab] OR policies[tiab] OR leadership[tiab] OR '
-    'workforce[tiab] OR "human resources"[tiab] OR "digital infrastructure"[tiab] OR '
-    'interoperab*[tiab] OR "decision support"[tiab] OR financ*[tiab] OR '
-    'reimburs*[tiab] OR "cost-effectiveness"[tiab] OR equity[tiab] OR '
-    'ethic*[tiab] OR sustainab*[tiab])'
+    '(implement*[tiab] OR "organizational readiness"[tiab] OR '
+    '"organisational readiness"[tiab] OR "change management"[tiab] OR '
+    '"clinical workflow"[tiab] OR "scale up"[tiab] OR rollout[tiab])'
 )
 
 # Base query without date filter (added per date-window chunk)
-QUERY_BASE = f'{G1} AND ({G2} OR {G3}) AND (english[Language])'
+QUERY_BASE = f'{G1} AND {G2} AND (english[Language])'
 
-# Full query with date filter (used only for the initial count)
-QUERY_VERSION_B = (
-    f'{G1} AND ({G2} OR {G3}) AND '
+# Full query with date filter (used for initial count and audit log)
+QUERY_VERSION_D = (
+    f'{G1} AND {G2} AND '
     f'("2015/01/01"[Date - Publication] : "3000"[Date - Publication]) AND '
     f'(english[Language])'
 )
@@ -317,7 +309,7 @@ if __name__ == '__main__':
     LOG_FILE   = f'pubmed_run_log_{today}.json'
 
     # 0. Total count (informational)
-    raw_count = get_count(QUERY_VERSION_B)
+    raw_count = get_count(QUERY_VERSION_D)
 
     # 1. Collect PMIDs via date-window chunking
     print("\n--- Phase 1: PMID collection ---")
@@ -334,7 +326,7 @@ if __name__ == '__main__':
     # 4. Audit log
     log = {
         'run_date_utc':       RUN_DATE,
-        'query_version':      'Version B',
+        'query_version':      'Version D',
         'database':           'PubMed/MEDLINE',
         'filters':            'English, 2015-present',
         'raw_hit_count':      raw_count,
@@ -342,7 +334,7 @@ if __name__ == '__main__':
         'retrieved_count':    len(records),
         'deduplicated_count': int(len(df)),
         'output_file':        OUTPUT_CSV,
-        'query_string':       QUERY_VERSION_B,
+        'query_string':       QUERY_VERSION_D,
         'retrieval_method':   'date-window esearch + POST efetch (bypasses 9999/10000 caps)',
     }
     with open(LOG_FILE, 'w') as f:

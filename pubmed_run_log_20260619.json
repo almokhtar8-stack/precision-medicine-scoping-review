@@ -1,0 +1,13 @@
+{
+  "run_date_utc": "2026-06-19T15:42:03.556307+00:00",
+  "query_version": "Version B",
+  "database": "PubMed/MEDLINE",
+  "filters": "English, 2015-present",
+  "raw_hit_count": 117943,
+  "pmids_collected": 117942,
+  "retrieved_count": 117592,
+  "deduplicated_count": 117592,
+  "output_file": "pubmed_results_20260619.csv",
+  "query_string": "(\"precision medicine\"[tiab] OR \"personalized medicine\"[tiab] OR \"personalised medicine\"[tiab] OR \"genomic medicine\"[tiab] OR genomic*[tiab] OR pharmacogenom*[tiab] OR pharmacogenetic*[tiab] OR \"precision health\"[tiab] OR \"precision oncology\"[tiab] OR \"Precision Medicine\"[Mesh] OR \"Pharmacogenetics\"[Mesh] OR \"Genomics\"[Mesh]) AND ((implement*[tiab] OR adopt*[tiab] OR integrat*[tiab] OR \"organizational readiness\"[tiab] OR \"organisational readiness\"[tiab] OR readiness[tiab] OR \"change management\"[tiab] OR \"healthcare delivery\"[tiab] OR \"health care delivery\"[tiab] OR \"service delivery\"[tiab] OR \"clinical workflow\"[tiab] OR uptake[tiab] OR rollout[tiab] OR \"scale up\"[tiab] OR barrier*[tiab] OR facilitat*[tiab] OR enabler*[tiab]) OR (governance[tiab] OR policy[tiab] OR policies[tiab] OR leadership[tiab] OR workforce[tiab] OR \"human resources\"[tiab] OR \"digital infrastructure\"[tiab] OR interoperab*[tiab] OR \"decision support\"[tiab] OR financ*[tiab] OR reimburs*[tiab] OR \"cost-effectiveness\"[tiab] OR equity[tiab] OR ethic*[tiab] OR sustainab*[tiab])) AND (\"2015/01/01\"[Date - Publication] : \"3000\"[Date - Publication]) AND (english[Language])",
+  "retrieval_method": "date-window esearch + POST efetch (bypasses 9999/10000 caps)"
+}

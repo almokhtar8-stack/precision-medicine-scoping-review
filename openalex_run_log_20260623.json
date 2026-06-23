@@ -8,7 +8,7 @@
   "after_internal_dedup": 14544,
   "overlap_with_pubmed": 6431,
   "genuinely_new": 8113,
-  "output_file": "openalex_supplementary_20260623.csv",
+  "output_file": "openalex_crossvalidation_NOT_SCREENED_20260623.csv.gz",
   "dedup_method": "PMID match against pubmed_results_vD_20260619.csv",
   "g1_filter": "\"precision medicine\" OR \"personalized medicine\" OR \"personalised medicine\" OR pharmacogenom* OR pharmacogenetic*",
   "g2_filter": "implement* OR \"organizational readiness\" OR \"organisational readiness\" OR \"change management\" OR \"clinical workflow\" OR \"scale up\" OR rollout",

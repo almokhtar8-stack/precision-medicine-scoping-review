@@ -118,18 +118,28 @@ Note on field choice: `title_and_abstract.search.exact` was used instead of `tit
 | After internal de-duplication (OpenAlex ID) | 14,544 |
 | Already present in PubMed Version D (PMID match) | 6,431 |
 | Genuinely new records not in PubMed | **8,113** |
-| Output file (new records only) | `openalex_supplementary_20260623.csv.gz` |
+| Output file (new records only) | `openalex_crossvalidation_NOT_SCREENED_20260623.csv.gz` |
 
 **Note on raw vs. fetched count (14,552 vs. 14,570):** The 18-record excess is a normal OpenAlex cursor-pagination artefact — records can be added or re-indexed between the initial count call and the end of a multi-page retrieval. The 26 internal duplicates (same OpenAlex ID appearing on two pages) were removed.
 
 **De-duplication methodology:** Cross-matched by PMID using the `ids.pmid` field in OpenAlex records against the `pmid` column in `pubmed_results_vD_20260619.csv`. Records with no PMID in OpenAlex (i.e., not indexed in PubMed at all) are automatically treated as new. Title-based fuzzy matching was not applied; PMID is the authoritative identifier for PubMed-indexed records. The 6,431 overlapping records confirm that OpenAlex retrieved 81.9% of the PubMed Version D records under the same query logic — a strong validation that the query translates consistently across platforms.
+
+### OpenAlex Treatment Decision (2026-06-23)
+
+OpenAlex is retained as a **cross-validation source only** and is **not being screened** as part of this review. The 8,113 genuinely new records are archived in `openalex_crossvalidation_NOT_SCREENED_20260623.csv.gz` but excluded from title/abstract screening.
+
+**Reason:** A manual audit of a 75-record random sample drawn from the MEDIUM and HIGH relevance buckets of a triage pass over the OpenAlex-unique set yielded a 70–80% false-positive rate. The dominant error pattern was topic co-occurrence without substantive implementation content — papers that used precision medicine or pharmacogenomics terminology alongside a word like "implement" in a methods or limitations sentence, with no focus on healthcare delivery or adoption. This rate is incompatible with solo-reviewer screening.
+
+**Cross-validation finding:** The 81.9% PMID overlap confirms that the Version D query retrieves a consistent conceptual universe across platforms, strengthening confidence in the search strategy without requiring screening of the OpenAlex-unique set.
+
+**Disclosure:** The non-screening of 8,113 OpenAlex-unique records is disclosed as a limitation. See the Limitations section below.
 
 ---
 
 | Database | Status | Method | Count |
 |---|---|---|---|
 | PubMed/MEDLINE | **Complete** | Automated (NCBI E-utilities API) | 7,847 records (Version D) |
-| OpenAlex | **Complete** | Automated (open API, no key) — 8,113 new records after de-dup vs. PubMed | 8,113 new records |
+| OpenAlex | **Cross-validation only — not screened** | Automated (open API, no key) — 8,113 unique records archived in `openalex_crossvalidation_NOT_SCREENED_20260623.csv.gz`; excluded from screening after triage audit (70–80% FP rate); 81.9% PMID overlap confirms cross-platform consistency | 8,113 archived (not screened) |
 | Embase | Not pursued — institutional access unavailable | Manual instructions in `manual_search_instructions.md` if access becomes available | — |
 | Scopus | Not pursued — institutional access unavailable | Manual instructions in `manual_search_instructions.md` if access becomes available | — |
 | Web of Science | Not pursued — institutional access unavailable | Manual instructions in `manual_search_instructions.md` if access becomes available | — |
@@ -197,6 +207,16 @@ The following known relevant sources will be added via documented hand-search, s
 | Popejoy & Fullerton (2016). *Genomics is failing on diversity.* Nature. | 27734877 | No abstract indexed in PubMed; tiab search cannot retrieve it. |
 
 Additional sources may be added here as reference-list checking proceeds.
+
+---
+
+## Limitations of the Search Strategy
+
+**Single primary database design.** The originally planned four-database search (PubMed, Embase, Scopus, CINAHL) was not executed because institutional API access to all four non-PubMed platforms was unavailable (all returned 401/400 Unauthorized on 2026-06-23). The systematic search is therefore concentrated in PubMed/MEDLINE, supplemented by two targeted PubMed supplementary searches (Islamic bioethics strand, 47 records; financing strand, 589 records) and a documented hand-search log.
+
+**OpenAlex cross-validation and non-screening.** OpenAlex (240M+ works, including non-MEDLINE journals and conference papers) was queried under the same Version D logic and returned 14,544 records, of which 8,113 were not indexed in PubMed. These records were not screened. A 75-record manual audit of the OpenAlex-unique set's highest-relevance tier showed a 70–80% false-positive rate driven by topic co-occurrence without substantive implementation content — a volume incompatible with solo-reviewer screening. The 81.9% PMID overlap between OpenAlex and PubMed under the same query confirms that the Version D search strategy is platform-consistent; the non-PubMed 18.1% represents the residual coverage gap from the single-database design.
+
+**Future research note.** A multi-database replication — particularly including Embase (clinical trial and drug literature depth) and CINAHL (nursing and allied health implementation literature) — would be the methodological ideal for a systematic map of this topic. The search syntax for all four databases is documented in `manual_search_instructions.md` to facilitate this.
 
 ---
 

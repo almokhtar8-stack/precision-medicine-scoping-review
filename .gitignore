@@ -2,6 +2,9 @@
 __pycache__/
 *.pyc
 pmid_checkpoint.json
+.env
 # uncompressed CSVs — commit only .csv.gz
 pubmed_results_*.csv
 !pubmed_results_*.csv.gz
+openalex_supplementary_*.csv
+!openalex_supplementary_*.csv.gz

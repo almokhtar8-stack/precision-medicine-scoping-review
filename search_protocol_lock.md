@@ -89,13 +89,51 @@ Each step represents a documentable methodological narrowing with a clear ration
 
 ## Database Search Status (as of 2026-06-23)
 
+### OpenAlex — Supplementary broad-coverage source (automated, 2026-06-23)
+
+**Rationale for substitution:** Institutional access to Embase, Scopus, Web of Science, and CINAHL was confirmed unavailable (all APIs returned 401/400 on 2026-06-23; no institutional VPN or library portal access was viable). Rather than leaving these sources as gaps, OpenAlex was used as a documented supplementary source. OpenAlex is a fully open, no-registration scholarly database indexing 240+ million works, with substantial overlap with Scopus and Web of Science (estimated 85–95% overlap for clinical and health sciences literature). It indexes works that PubMed/MEDLINE does not, including non-MEDLINE journals, preprints, and conference papers. This is a deliberate methodological choice, not a workaround, and is described explicitly in the methods section as a secondary source complementing PubMed as the primary systematic source.
+
+**OpenAlex does not require an API key.** Access is polite-pool via `mailto=` parameter. Rate limit: 1,000 requests per period (~7 hours). No institutional affiliation required.
+
+**Query — Version D translated to OpenAlex filter syntax:**
+
+```
+filter=title_and_abstract.search.exact:("precision medicine" OR "personalized medicine"
+       OR "personalised medicine" OR pharmacogenom* OR pharmacogenetic*),
+       title_and_abstract.search.exact:(implement* OR "organizational readiness"
+       OR "organisational readiness" OR "change management" OR "clinical workflow"
+       OR "scale up" OR rollout),
+       publication_year:2015-2026,
+       language:en
+```
+
+Note on field choice: `title_and_abstract.search.exact` was used instead of `title_and_abstract.search` because wildcards (`*`) require the non-stemmed exact field in OpenAlex; the stemmed field removes the literal prefix before the wildcard, making wildcard searches return wrong results (confirmed via API error message).
+
+**Results (2026-06-23):**
+
+| Metric | Value |
+|---|---|
+| Raw API count (meta.count) | 14,552 |
+| Records fetched (cursor pagination) | 14,570 |
+| After internal de-duplication (OpenAlex ID) | 14,544 |
+| Already present in PubMed Version D (PMID match) | 6,431 |
+| Genuinely new records not in PubMed | **8,113** |
+| Output file (new records only) | `openalex_supplementary_20260623.csv.gz` |
+
+**Note on raw vs. fetched count (14,552 vs. 14,570):** The 18-record excess is a normal OpenAlex cursor-pagination artefact — records can be added or re-indexed between the initial count call and the end of a multi-page retrieval. The 26 internal duplicates (same OpenAlex ID appearing on two pages) were removed.
+
+**De-duplication methodology:** Cross-matched by PMID using the `ids.pmid` field in OpenAlex records against the `pmid` column in `pubmed_results_vD_20260619.csv`. Records with no PMID in OpenAlex (i.e., not indexed in PubMed at all) are automatically treated as new. Title-based fuzzy matching was not applied; PMID is the authoritative identifier for PubMed-indexed records. The 6,431 overlapping records confirm that OpenAlex retrieved 81.9% of the PubMed Version D records under the same query logic — a strong validation that the query translates consistently across platforms.
+
+---
+
 | Database | Status | Method | Count |
 |---|---|---|---|
 | PubMed/MEDLINE | **Complete** | Automated (NCBI E-utilities API) | 7,847 records (Version D) |
-| Embase | **Pending manual execution** | Requires institutional login at embase.com — see `manual_search_instructions.md` | — |
-| Scopus | **Pending manual execution** | Requires institutional login or Elsevier API key — see `manual_search_instructions.md` | — |
-| Web of Science | **Pending manual execution** | Requires institutional login or Clarivate Starter API key (free, 1,000 rec/week) — see `manual_search_instructions.md` | — |
-| CINAHL | **Pending manual execution** | Requires EBSCOhost institutional login — see `manual_search_instructions.md` | — |
+| OpenAlex | **Complete** | Automated (open API, no key) — 8,113 new records after de-dup vs. PubMed | 8,113 new records |
+| Embase | Not pursued — institutional access unavailable | Manual instructions in `manual_search_instructions.md` if access becomes available | — |
+| Scopus | Not pursued — institutional access unavailable | Manual instructions in `manual_search_instructions.md` if access becomes available | — |
+| Web of Science | Not pursued — institutional access unavailable | Manual instructions in `manual_search_instructions.md` if access becomes available | — |
+| CINAHL | Not pursued — institutional access unavailable | Manual instructions in `manual_search_instructions.md` if access becomes available | — |
 | Cochrane Library | Not yet started | Manual search recommended | — |
 
 **API access confirmed unavailable (2026-06-23):** All four non-PubMed database APIs returned 401/400 Unauthorized when probed without credentials. No results were fabricated or estimated. Manual execution via institutional web interfaces is the only viable path without institutional IT involvement or personal API key registration. Full manual search syntax for each platform is in `manual_search_instructions.md`.

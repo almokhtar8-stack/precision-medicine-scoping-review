@@ -1,0 +1,13 @@
+{
+  "run_date_utc": "2026-06-23T15:49:37.933081+00:00",
+  "search_type": "supplementary",
+  "search_label": "Financing / reimbursement \u2014 supplementary",
+  "database": "PubMed/MEDLINE",
+  "raw_count": 593,
+  "retrieved": 589,
+  "after_dedup": 589,
+  "duplicates_removed": 0,
+  "output_file": "pubmed_supplementary_financing_20260623.csv",
+  "query_string": "(\"precision medicine\"[tiab] OR \"personalized medicine\"[tiab] OR pharmacogenom*[tiab]) AND (reimburs*[tiab] OR \"cost-effectiveness\"[tiab] OR \"health economics\"[tiab] OR financ*[tiab] OR \"payer\"[tiab] OR \"insurance coverage\"[tiab]) AND (implement*[tiab] OR adopt*[tiab] OR \"healthcare delivery\"[tiab]) AND (\"2015/01/01\"[Date - Publication] : \"3000\"[Date - Publication]) AND (english[Language])",
+  "note": "Separate from Version D main search. Not merged into main dataset."
+}

@@ -87,13 +87,66 @@ Each step represents a documentable methodological narrowing with a clear ration
 
 ---
 
-## Planned Sources (not yet searched)
+## Database Search Status (as of 2026-06-23)
 
-1. PubMed/MEDLINE (Version B pilot complete; Version D pending)
-2. Embase
-3. CINAHL
-4. Web of Science
-5. Cochrane Library
+| Database | Status | Method | Count |
+|---|---|---|---|
+| PubMed/MEDLINE | **Complete** | Automated (NCBI E-utilities API) | 7,847 records (Version D) |
+| Embase | **Pending manual execution** | Requires institutional login at embase.com — see `manual_search_instructions.md` | — |
+| Scopus | **Pending manual execution** | Requires institutional login or Elsevier API key — see `manual_search_instructions.md` | — |
+| Web of Science | **Pending manual execution** | Requires institutional login or Clarivate Starter API key (free, 1,000 rec/week) — see `manual_search_instructions.md` | — |
+| CINAHL | **Pending manual execution** | Requires EBSCOhost institutional login — see `manual_search_instructions.md` | — |
+| Cochrane Library | Not yet started | Manual search recommended | — |
+
+**API access confirmed unavailable (2026-06-23):** All four non-PubMed database APIs returned 401/400 Unauthorized when probed without credentials. No results were fabricated or estimated. Manual execution via institutional web interfaces is the only viable path without institutional IT involvement or personal API key registration. Full manual search syntax for each platform is in `manual_search_instructions.md`.
+
+---
+
+## Supplementary Searches (automated, PubMed, separate from Version D)
+
+Two targeted supplementary PubMed searches were run on 2026-06-23 to address gaps identified during the 183-record Version D shortlist review. These are **not merged into the Version D main dataset** and are reported separately in the methods section.
+
+### Supplementary 1 — Islamic Bioethics / Genomic Consent
+
+**Rationale:** Zero records in the Version D PubMed shortlist touched this strand directly. Version D's G1 focuses on precision/pharmacogenomics terminology and G1 does not capture Islamic bioethics commentary that uses different framing.
+
+**Query:**
+```
+("Islam"[tiab] OR "Islamic"[tiab] OR "Muslim"[tiab])
+AND (bioethic*[tiab] OR "informed consent"[tiab] OR "genetic counseling"[tiab]
+     OR "genetic counselling"[tiab] OR "research ethics"[tiab])
+AND (genomic*[tiab] OR genetic*[tiab] OR "precision medicine"[tiab])
+AND ("2015/01/01"[Date - Publication] : "3000"[Date - Publication])
+AND (english[Language])
+```
+
+| Metric | Value |
+|---|---|
+| Raw API count | 48 |
+| Records retrieved | 47 |
+| After de-duplication | 47 |
+| Output file | `pubmed_supplementary_islamic_bioethics_20260623.csv` |
+
+### Supplementary 2 — Financing / Reimbursement
+
+**Rationale:** Financing/reimbursement domain was identified as thinner than other six domains in the Version D shortlist. Version D's G2 anchors on implementation terminology; reimbursement-focused papers often lack explicit implementation language.
+
+**Query:**
+```
+("precision medicine"[tiab] OR "personalized medicine"[tiab] OR pharmacogenom*[tiab])
+AND (reimburs*[tiab] OR "cost-effectiveness"[tiab] OR "health economics"[tiab]
+     OR financ*[tiab] OR "payer"[tiab] OR "insurance coverage"[tiab])
+AND (implement*[tiab] OR adopt*[tiab] OR "healthcare delivery"[tiab])
+AND ("2015/01/01"[Date - Publication] : "3000"[Date - Publication])
+AND (english[Language])
+```
+
+| Metric | Value |
+|---|---|
+| Raw API count | 593 |
+| Records retrieved | 589 |
+| After de-duplication | 589 |
+| Output file | `pubmed_supplementary_financing_20260623.csv` |
 
 ---
 

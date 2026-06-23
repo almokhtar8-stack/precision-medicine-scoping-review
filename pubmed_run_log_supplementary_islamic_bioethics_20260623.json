@@ -1,0 +1,13 @@
+{
+  "run_date_utc": "2026-06-23T15:49:37.933081+00:00",
+  "search_type": "supplementary",
+  "search_label": "Islamic bioethics / genomic consent \u2014 supplementary",
+  "database": "PubMed/MEDLINE",
+  "raw_count": 48,
+  "retrieved": 47,
+  "after_dedup": 47,
+  "duplicates_removed": 0,
+  "output_file": "pubmed_supplementary_islamic_bioethics_20260623.csv",
+  "query_string": "(\"Islam\"[tiab] OR \"Islamic\"[tiab] OR \"Muslim\"[tiab]) AND (bioethic*[tiab] OR \"informed consent\"[tiab] OR \"genetic counseling\"[tiab] OR \"genetic counselling\"[tiab] OR \"research ethics\"[tiab]) AND (genomic*[tiab] OR genetic*[tiab] OR \"precision medicine\"[tiab]) AND (\"2015/01/01\"[Date - Publication] : \"3000\"[Date - Publication]) AND (english[Language])",
+  "note": "Separate from Version D main search. Not merged into main dataset."
+}
